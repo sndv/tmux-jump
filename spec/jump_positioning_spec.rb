@@ -106,7 +106,11 @@ CASES = [
 end
 
 RSpec.describe "jump positioning (#{TMUX_BIN})" do
-  after { tmux('kill-server') }
+  after do
+    tmux('kill-server')
+    # kill-server is asynchronous; a new server on the same socket can race a dying one
+    100.times { break if tmux('has-session') =~ /no server|error connecting/; sleep 0.02 }
+  end
 
   %w[vi emacs].each do |mode_keys|
     context "with mode-keys #{mode_keys}" do
