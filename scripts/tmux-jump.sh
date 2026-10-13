@@ -9,5 +9,6 @@ export JUMP_BACKGROUND_COLOR=$(get_tmux_option "@jump-bg-color" "\e[0m\e[32m")
 export JUMP_FOREGROUND_COLOR=$(get_tmux_option "@jump-fg-color" "\e[1m\e[31m")
 export JUMP_KEYS_POSITION=$(get_tmux_option "@jump-keys-position" "left")
 export JUMP_KEYS=$(get_tmux_option "@jump-keys" "jfhgkdlsa")
+export JUMP_CHARS=$(get_tmux_option "@jump-chars" "1")
 export JUMP_KEY_CASE=$(get_tmux_option "@jump-key-case" "ignorecase")
 ruby "$current_dir/tmux-jump.rb" "$tmp_file"

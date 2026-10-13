@@ -81,6 +81,11 @@ And the keys:
 set -g @jump-keys 'aoeuidhtns'
 ```
 
+The number of characters to type before the keys are shown (default 1):
+```
+set -g @jump-chars 2
+```
+
 The case sensitivity setting can be configured as well. The default is
 case-insensitive search. With casesensitive tmux-jump will only match the
 search character if the case matches. With smartcase, tmux-jump will match the

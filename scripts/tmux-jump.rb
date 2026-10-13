@@ -17,6 +17,7 @@ RESTORE_NORMAL_SCREEN = "\e[?1049l"
 # CONFIG
 KEYS_POSITION = ENV['JUMP_KEYS_POSITION']
 KEYS = ENV['JUMP_KEYS'].each_char.to_a
+JUMP_CHARS = [ENV.fetch('JUMP_CHARS', '1').to_i, 1].max
 Config = Struct.new(
   :pane_nr,
   :pane_tty_file,
@@ -147,9 +148,10 @@ end
 def positions_of(jump_to_char, screen_chars)
   positions = []
 
-  positions << 0 if screen_chars[0] =~ /\w/ && matches_case?(screen_chars[0], jump_to_char)
+  n = jump_to_char.size
+  positions << 0 if screen_chars[0] =~ /\w/ && matches_case?(screen_chars[0, n], jump_to_char)
   screen_chars.each_char.with_index do |char, i|
-    if (char =~ /\w/).nil? && screen_chars[i+1] && matches_case?(screen_chars[i+1], jump_to_char)
+    if (char =~ /\w/).nil? && screen_chars[i+1] && matches_case?(screen_chars[i+1, n], jump_to_char)
       positions << i+1
     end
   end
@@ -203,6 +205,13 @@ def main
     jump_to_char = read_char_from_file! File.new(Config.tmp_file)
   rescue Timeout::Error
     Kernel.exit
+  end
+  (JUMP_CHARS - 1).times do
+    begin
+      jump_to_char += prompt_char!
+    rescue Timeout::Error, TypeError # timeout or escape (nil)
+      Kernel.exit
+    end
   end
   `tmux send-keys -X -t #{Config.pane_nr} cancel` if Config.pane_mode == '1'
   start = -Config.scroll_position

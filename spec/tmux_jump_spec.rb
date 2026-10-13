@@ -66,6 +66,13 @@ RSpec.describe 'tmux-jump' do
       end
     end
 
+    context 'with a multi-character search' do
+      it 'matches word starts by their first characters' do
+        expect(positions_of('he', "hello help hat")).to eq [0, 6]
+        expect(positions_of('ha', "hello help hat")).to eq [11]
+      end
+    end
+
     context 'with ignorecase (default)' do
       let(:mixed_case_screen) { "Hello hello HELLO" }
 
