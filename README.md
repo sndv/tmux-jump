@@ -48,17 +48,17 @@ tmux source-file ~/.tmux.conf
 
 ## Usage
 
-* <kbd>tmux-prefix</kbd> + <kbd>j</kbd> and enter the first character of a word.
+* <kbd>tmux-prefix</kbd> + your `@jump-key` and enter the first character of a word.
 * The screen will rerender and highlight the keys to press to jump to the word.
 * Type the key sequence of the word to jump to.
 * The cursor moves to the word.
 
 tmux-jump can also be used in in any program and during copy mode.
 
-You can customize the key binding in your `.tmux.conf`:
+There is no default key binding. Set one in your `.tmux.conf` (before the plugin is loaded):
 
 ```
-set -g @jump-key 's'
+set -g @jump-key 'j'
 ```
 
 You can also customize foreground and background color:
